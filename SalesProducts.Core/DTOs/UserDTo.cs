@@ -6,7 +6,7 @@ namespace SalesProducts.Core.DTOs
 {
     public class UserDTo
     {
-        public int UsuId { get; set; }
+        public int Id { get; set; }
         public string UsuNombre { get; set; }
         public string UsuPass { get; set; }
     }

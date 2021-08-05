@@ -42,15 +42,15 @@ namespace SalesProducts.Infrastructure.Data.Configurations
          .HasColumnName("PedProd")
              .IsRequired();
 
-        
-            builder.HasOne(d => d.PedProdNavigation)
-                .WithMany(p => p.Pedido)
+ 
+            builder.HasOne(d => d.Product)
+                .WithMany(p => p.Orders)
                 .HasForeignKey(d => d.PedProd)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Pedido_Producto");
 
-            builder.HasOne(d => d.PedUsuNavigation)
-                     .WithMany(p => p.Pedido)
+            builder.HasOne(d => d.User)
+                     .WithMany(p => p.Orders)
                      .HasForeignKey(d => d.PedUsu)
                      .OnDelete(DeleteBehavior.ClientSetNull)
                      .HasConstraintName("FK_Pedido_Usuario");

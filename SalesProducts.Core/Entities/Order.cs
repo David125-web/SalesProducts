@@ -14,7 +14,7 @@ namespace SalesProducts.Core.Entities
         public double PedIva { get; set; }
         public decimal PedTotal { get; set; }
 
-        public virtual Product PedProdNavigation { get; set; }
-        public virtual User PedUsuNavigation { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual User User { get; set; }
     }
 }

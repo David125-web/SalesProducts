@@ -66,7 +66,7 @@ namespace SalesProducts.Api.Controllers
                 _configuration["Authentication:Audience"],
                 claims,
                 DateTime.Now,
-                DateTime.UtcNow.AddMinutes(2)
+                DateTime.UtcNow.AddMinutes(10)
             );
             #endregion
             #region signature - firma

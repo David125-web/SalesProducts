@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SalesProducts.Core.Entities;
+using SalesProducts.Core.Enumerations;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,7 +16,7 @@ namespace SalesProducts.Infrastructure.Data.Configurations
             builder.HasKey(e => e.Id);
 
             builder.Property(e => e.Id)
-            .HasColumnName("IdComentario");
+            .HasColumnName("IdSeguridad");
 
             builder.Property(e => e.User)
             .HasColumnName("Usuario")

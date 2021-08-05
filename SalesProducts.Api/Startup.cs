@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,13 +9,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SalesProducts.Core.Interfaces;
+using SalesProducts.Core.Services;
 using SalesProducts.Infrastructure.Data;
+using SalesProducts.Infrastructure.Filters;
 using SalesProducts.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +42,8 @@ namespace SalesProducts.Api
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers(options =>
             {
+                options.Filters.Add<GlobalExceptionFilter>();
+
             }).AddNewtonsoftJson(options =>
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -46,9 +55,21 @@ namespace SalesProducts.Api
                 });
             services.AddDbContext<SalesProductsContext>(options =>
           options.UseSqlServer(Configuration.GetConnectionString("SalesProducts")));
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<ISecurityService, SecurityService>();
+
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            services.AddSwaggerGen(doc =>
+            {
+                doc.SwaggerDoc("v1", new OpenApiInfo { Title = "Sales Products API", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                doc.IncludeXmlComments(xmlPath);
+            });
 
             services.AddAuthentication(options =>
             {
@@ -68,6 +89,15 @@ namespace SalesProducts.Api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:SecretKey"])),
                     };
                 });
+            IdentityModelEventSource.ShowPII = true;
+
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidationFilters>();
+            }).AddFluentValidation(options => {
+                options.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +110,17 @@ namespace SalesProducts.Api
 
             app.UseHttpsRedirection();
 
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Sales Products API V1");
+                options.RoutePrefix = string.Empty;
+            });
+
             app.UseRouting();
+
 
             app.UseAuthentication();
 

@@ -6,7 +6,7 @@ namespace SalesProducts.Core.DTOs
 {
     public class OrderDTo
     {
-        public int PedId { get; set; }
+        public int Id { get; set; }
         public int PedUsu { get; set; }
         public int PedProd { get; set; }
         public decimal PedVrUnit { get; set; }

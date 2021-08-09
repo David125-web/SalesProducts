@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SalesProductsClientConsume.Interfaces;
+using SalesProducts.Client.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SalesProductsClientConsume.Controllers
+namespace SalesProducts.Client.Controllers
 {
     public class LoginController : Controller
     {
@@ -26,9 +26,9 @@ namespace SalesProductsClientConsume.Controllers
         {
             try
             {
-               var token = await _accountService.GetToken(_configuration["SalesPorductAccount:clientId"], _configuration["SalesPorductAccount:clientScret"]);
+                var token = await _accountService.GetToken(_configuration["SalesPorductAccount:clientId"], _configuration["SalesPorductAccount:clientScret"]);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Debug.Write(ex);
             }
@@ -36,3 +36,4 @@ namespace SalesProductsClientConsume.Controllers
         }
     }
 }
+

@@ -1,5 +1,5 @@
-﻿using SalesProductsClientConsume.Entities;
-using SalesProductsClientConsume.Interfaces;
+﻿using SalesProducts.Client.Entities;
+using SalesProducts.Client.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SalesProductsClientConsume.Repositories
+namespace SalesProducts.Core.Repositories
 {
     public class AccountService : IAccountService
     {

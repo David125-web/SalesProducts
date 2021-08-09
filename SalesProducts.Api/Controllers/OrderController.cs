@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SalesProducts.Api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]

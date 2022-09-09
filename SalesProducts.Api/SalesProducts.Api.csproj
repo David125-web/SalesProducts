@@ -23,5 +23,6 @@
     <ProjectReference Include="..\SalesProducts.Infrastructure\SalesProducts.Infrastructure.csproj" />
   </ItemGroup>
 
+	
 
 </Project>
